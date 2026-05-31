@@ -1,37 +1,88 @@
-# 🧪 Lab Estoque
+🧪 Lab Estoque
+Sistema web de gestão de estoque e automação de alertas para laboratórios, desenvolvido com FastAPI, SQLite e Jinja2.
 
-O **Lab Estoque** é um sistema web completo de gestão e controle de estoque desenvolvido especificamente para laboratórios. O sistema permite monitorar insumos, controlar validades por lotes, emitir alertas automáticos de estoque baixo e gerar listas de compras inteligentes.
+📋 Funcionalidades
 
-## 🚀 Link do Projeto Online
-Acesse o sistema ao vivo aqui: [Lab Estoque no Render](https://lab-estoque-eduardo-fioreti.onrender.com/insumos)
+📦 Cadastro de Insumos — nome, tipo, estoque mínimo, unidade e link da FISPQ
+🗃️ Cadastro de Lotes — número do lote, quantidade, data de recebimento e validade
+🚨 Painel de Alertas — varredura automática do banco para identificar:
 
----
+Estoques abaixo do mínimo
+Lotes com vencimento crítico (até 30 dias)
+Lotes com vencimento próximo (31 a 90 dias)
 
-## 🛠️ Tecnologias Utilizadas
 
-- **Backend:** Python 3 + FastAPI
-- **Banco de Dados:** SQLite + SQLAlchemy (ORM)
-- **Frontend:** HTML5, CSS3 (Design Responsivo para Mobile e Desktop)
-- **Template Engine:** Jinja2
-- **Hospedagem/Deploy:** Render
-- **Controle de Versão:** Git + GitHub
+🛒 Lista de Compras — gerada automaticamente com sugestão de quantidade a repor
+🗑️ Baixa de Estoque — marcação de lotes como consumidos
 
----
 
-## 📦 Funcionalidades Principais
+🛠️ Tecnologias Utilizadas
+CamadaTecnologiaBackendFastAPIBanco de DadosSQLite com SQLAlchemyTemplatesJinja2FrontendHTML5 + CSS3ServidorUvicorn
 
-- **Painel de Insumos:** Cadastro, visualização e controle da quantidade total de reagentes e materiais.
-- **Controle de Lotes:** Gerenciamento de datas de validade e quantidades específicas por lote de entrada.
-- **Sistema de Alertas:** Identificação automática de itens com estoque abaixo do mínimo configurado.
-- **Lista de Compras:** Geração automatizada de relatórios com os insumos necessários para reposição imediata.
+📁 Estrutura do Projeto
+lab_estoque/
+├── requirements.txt
+├── scripts/
+│   └── verificar_estoque.py   # Lógica de alertas e lista de compras
+└── app/
+    ├── main.py                # Ponto de entrada da aplicação
+    ├── database.py            # Configuração do SQLite + SQLAlchemy
+    ├── models.py              # Modelos das tabelas (Insumo, Lote)
+    ├── routers/
+    │   ├── insumos.py         # Rotas de insumos
+    │   ├── lotes.py           # Rotas de lotes
+    │   └── alertas.py         # Rotas de alertas e compras
+    ├── static/
+    │   └── css/
+    │       └── style.css
+    └── templates/
+        ├── base.html
+        ├── index.html
+        ├── insumos/
+        │   ├── listar.html
+        │   └── cadastrar.html
+        ├── lotes/
+        │   ├── listar.html
+        │   └── cadastrar.html
+        └── alertas/
+            ├── painel.html
+            └── compras.html
 
----
+🚀 Como Rodar Localmente
+Pré-requisitos: Python 3.10+
+1. Clone o repositório
+bashgit clone https://github.com/SEU_USUARIO/lab_estoque.git
+cd lab_estoque
+2. Crie e ative o ambiente virtual
+bashpython -m venv venv
 
-## 🔧 Como Executar o Projeto Localmente
+# Windows
+venv\Scripts\activate
 
-Se quiser rodar este projeto na sua máquina local, siga os passos abaixo:
+# Linux/macOS
+source venv/bin/activate
+3. Instale as dependências
+bashpip install -r requirements.txt
+4. Inicie o servidor
+bashuvicorn app.main:app --reload
+5. Acesse no navegador
+http://127.0.0.1:8000
+O banco de dados SQLite (lab_estoque.db) é criado automaticamente na primeira execução.
 
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/EduardoFioreti/lab_estoque.git](https://github.com/EduardoFioreti/lab_estoque.git)
-   cd lab_estoque
+🖥️ Telas do Sistema
+RotaDescrição/Página inicial/insumosListagem de insumos com status de estoque/insumos/cadastrarFormulário de cadastro de insumo/lotesListagem de lotes com status de validade/lotes/cadastrarFormulário de cadastro de lote/alertasPainel de alertas automáticos/comprasLista de compras gerada automaticamente
+
+⚙️ Lógica de Alertas
+A varredura é feita pelo script scripts/verificar_estoque.py que:
+
+Calcula o estoque atual de cada insumo somando todos os lotes não consumidos
+Compara com o estoque mínimo cadastrado
+Sugere quantidade de reposição equivalente ao dobro do mínimo menos o estoque atual
+Classifica lotes por proximidade do vencimento em três níveis: OK, Atenção e Crítico
+
+
+🌐 Deploy
+O sistema está disponível em produção via Render:
+🔗 https://lab-estoque-eduardo-fioreti.onrender.com/
+
+O plano gratuito hiberna após 15 minutos de inatividade. O primeiro acesso pode levar até 60 segundos para carregar.
