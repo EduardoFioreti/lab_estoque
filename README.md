@@ -1,25 +1,41 @@
-🧪 Lab Estoque
-Sistema web de gestão de estoque e automação de alertas para laboratórios, desenvolvido com FastAPI, SQLite e Jinja2.
+# 🧪 Lab Estoque
 
-📋 Funcionalidades
+Sistema web de gestão de estoque e automação de alertas para laboratórios, desenvolvido com **FastAPI**, **SQLite** e **Jinja2**.
 
-📦 Cadastro de Insumos — nome, tipo, estoque mínimo, unidade e link da FISPQ
-🗃️ Cadastro de Lotes — número do lote, quantidade, data de recebimento e validade
-🚨 Painel de Alertas — varredura automática do banco para identificar:
+🔗 **[Acesse o sistema online](https://lab-estoque-eduardo-fioreti.onrender.com/)**
 
-Estoques abaixo do mínimo
-Lotes com vencimento crítico (até 30 dias)
-Lotes com vencimento próximo (31 a 90 dias)
+> O plano gratuito hiberna após 15 minutos de inatividade. O primeiro acesso pode levar até 60 segundos para carregar.
 
+---
 
-🛒 Lista de Compras — gerada automaticamente com sugestão de quantidade a repor
-🗑️ Baixa de Estoque — marcação de lotes como consumidos
+## 📋 Funcionalidades
 
+- 📦 **Cadastro de Insumos** — nome, tipo, estoque mínimo, unidade e link da FISPQ
+- 🗃️ **Cadastro de Lotes** — número do lote, quantidade, data de recebimento e validade
+- 🚨 **Painel de Alertas** — varredura automática do banco para identificar:
+  - Estoques abaixo do mínimo
+  - Lotes com vencimento crítico (até 30 dias)
+  - Lotes com vencimento próximo (31 a 90 dias)
+- 🛒 **Lista de Compras** — gerada automaticamente com sugestão de quantidade a repor
+- 🗑️ **Baixa de Estoque** — marcação de lotes como consumidos
 
-🛠️ Tecnologias Utilizadas
-CamadaTecnologiaBackendFastAPIBanco de DadosSQLite com SQLAlchemyTemplatesJinja2FrontendHTML5 + CSS3ServidorUvicorn
+---
 
-📁 Estrutura do Projeto
+## 🛠️ Tecnologias Utilizadas
+
+| Camada | Tecnologia |
+|---|---|
+| Backend | [FastAPI](https://fastapi.tiangolo.com/) |
+| Banco de Dados | SQLite com [SQLAlchemy](https://www.sqlalchemy.org/) |
+| Templates | [Jinja2](https://jinja.palletsprojects.com/) |
+| Frontend | HTML5 + CSS3 |
+| Servidor | [Uvicorn](https://www.uvicorn.org/) |
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
 lab_estoque/
 ├── requirements.txt
 ├── scripts/
@@ -47,42 +63,69 @@ lab_estoque/
         └── alertas/
             ├── painel.html
             └── compras.html
+```
 
-🚀 Como Rodar Localmente
-Pré-requisitos: Python 3.10+
-1. Clone o repositório
-bashgit clone https://github.com/SEU_USUARIO/lab_estoque.git
+---
+
+## 🚀 Como Rodar Localmente
+
+**Pré-requisitos:** Python 3.10+
+
+**1. Clone o repositório**
+```bash
+git clone https://github.com/EduardoFioreti/lab_estoque.git
 cd lab_estoque
-2. Crie e ative o ambiente virtual
-bashpython -m venv venv
+```
+
+**2. Crie e ative o ambiente virtual**
+```bash
+python -m venv venv
 
 # Windows
 venv\Scripts\activate
 
 # Linux/macOS
 source venv/bin/activate
-3. Instale as dependências
-bashpip install -r requirements.txt
-4. Inicie o servidor
-bashuvicorn app.main:app --reload
-5. Acesse no navegador
+```
+
+**3. Instale as dependências**
+```bash
+pip install -r requirements.txt
+```
+
+**4. Inicie o servidor**
+```bash
+uvicorn app.main:app --reload
+```
+
+**5. Acesse no navegador**
+```
 http://127.0.0.1:8000
-O banco de dados SQLite (lab_estoque.db) é criado automaticamente na primeira execução.
+```
 
-🖥️ Telas do Sistema
-RotaDescrição/Página inicial/insumosListagem de insumos com status de estoque/insumos/cadastrarFormulário de cadastro de insumo/lotesListagem de lotes com status de validade/lotes/cadastrarFormulário de cadastro de lote/alertasPainel de alertas automáticos/comprasLista de compras gerada automaticamente
+O banco de dados SQLite (`lab_estoque.db`) é criado automaticamente na primeira execução.
 
-⚙️ Lógica de Alertas
-A varredura é feita pelo script scripts/verificar_estoque.py que:
+---
 
-Calcula o estoque atual de cada insumo somando todos os lotes não consumidos
-Compara com o estoque mínimo cadastrado
-Sugere quantidade de reposição equivalente ao dobro do mínimo menos o estoque atual
-Classifica lotes por proximidade do vencimento em três níveis: OK, Atenção e Crítico
+## 🖥️ Telas do Sistema
 
+| Rota | Descrição |
+|---|---|
+| `/` | Página inicial |
+| `/insumos` | Listagem de insumos com status de estoque |
+| `/insumos/cadastrar` | Formulário de cadastro de insumo |
+| `/lotes` | Listagem de lotes com status de validade |
+| `/lotes/cadastrar` | Formulário de cadastro de lote |
+| `/alertas` | Painel de alertas automáticos |
+| `/compras` | Lista de compras gerada automaticamente |
 
-🌐 Deploy
-O sistema está disponível em produção via Render:
-🔗 https://lab-estoque-eduardo-fioreti.onrender.com/
+---
 
-O plano gratuito hiberna após 15 minutos de inatividade. O primeiro acesso pode levar até 60 segundos para carregar.
+## ⚙️ Lógica de Alertas
+
+A varredura é feita pelo script `scripts/verificar_estoque.py` que:
+
+- Calcula o **estoque atual** de cada insumo somando todos os lotes não consumidos
+- Compara com o **estoque mínimo** cadastrado
+- Sugere quantidade de reposição equivalente ao **dobro do mínimo** menos o estoque atual
+- Classifica lotes por proximidade do vencimento em três níveis: **OK**, **Atenção** e **Crítico**
