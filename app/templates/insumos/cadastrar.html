@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastrar Insumo — Lab Estoque{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+    <h2>📦 Cadastrar Novo Insumo</h2>
+
+    <form method="POST" action="/insumos/cadastrar">
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="nome">Nome do Insumo *</label>
+                <input type="text" id="nome" name="nome"
+                       placeholder="Ex: Ácido Sulfúrico" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo">Tipo *</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="">Selecione...</option>
+                    <option value="Reagente">Reagente</option>
+                    <option value="EPI">EPI</option>
+                    <option value="Vidraria">Vidraria</option>
+                    <option value="Equipamento">Equipamento</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="estoque_minimo">Estoque Mínimo *</label>
+                <input type="number" id="estoque_minimo" name="estoque_minimo"
+                       step="0.01" min="0" placeholder="Ex: 5.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="unidade">Unidade *</label>
+                <select id="unidade" name="unidade" required>
+                    <option value="">Selecione...</option>
+                    <option value="L">L (Litro)</option>
+                    <option value="mL">mL (Mililitro)</option>
+                    <option value="kg">kg (Quilograma)</option>
+                    <option value="g">g (Grama)</option>
+                    <option value="unidade">Unidade</option>
+                    <option value="caixa">Caixa</option>
+                    <option value="par">Par</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="grid-column: span 2;">
+                <label for="link_fispq">Link da FISPQ (opcional)</label>
+                <input type="url" id="link_fispq" name="link_fispq"
+                       placeholder="https://...">
+            </div>
+
+        </div>
+
+        <div style="margin-top: 8px; display: flex; gap: 12px;">
+            <button type="submit" class="btn btn-sucesso">💾 Salvar Insumo</button>
+            <a href="/insumos" class="btn btn-primario">← Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

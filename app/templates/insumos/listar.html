@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block titulo %}Insumos — Lab Estoque{% endblock %}
+
+{% block conteudo %}
+
+{# --- APAGUE O BLOCO DE ANTES E COLE ESSE AQUI --- #}
+{% if mensagem %}
+<div style="padding: 15px; margin-bottom: 20px; border-radius: 4px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; font-weight: bold; text-align: center;">
+    ✅ {{ mensagem }}
+</div>
+{% endif %}
+
+<div class="card">
+    <h2>📦 Insumos Cadastrados</h2>
+    <a href="/insumos/cadastrar" class="btn btn-primario">+ Novo Insumo</a>
+</div>
+
+<div class="card">
+    {% if insumos %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Estoque Atual</th>
+                <th>Estoque Mínimo</th>
+                <th>Unidade</th>
+                <th>Situação</th>
+                <th>FISPQ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insumo in insumos %}
+            <tr>
+                <td><strong>{{ insumo.nome }}</strong></td>
+                <td>{{ insumo.tipo }}</td>
+                <td>{{ insumo.estoque_atual }}</td>
+                <td>{{ insumo.estoque_minimo }}</td>
+                <td>{{ insumo.unidade }}</td>
+                <td>
+                    {% if insumo.estoque_bajo or insumo.estoque_baixo %}
+                        <span class="badge badge-perigo">⚠️ Estoque Baixo</span>
+                    {% else %}
+                        <span class="badge badge-ok">✅ Normal</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if insumo.link_fispq %}
+                        <a href="{{ insumo.link_fispq }}" target="_blank" class="btn btn-primario">🔗 Ver</a>
+                    {% else %}
+                        <span style="color:#aaa;">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="color:#888; text-align:center; padding: 32px 0;">
+            Nenhum insumo cadastrado ainda. <a href="/insumos/cadastrar">Cadastre o primeiro!</a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

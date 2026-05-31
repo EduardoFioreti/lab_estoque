@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block titulo %}Lotes — Lab Estoque{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+    <h2>🗃️ Lotes Cadastrados</h2>
+    <a href="/lotes/cadastrar" class="btn btn-primario">+ Novo Lote</a>
+</div>
+
+<div class="card">
+    {% if lotes %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nº Lote</th>
+                <th>Insumo</th>
+                <th>Quantidade</th>
+                <th>Recebimento</th>
+                <th>Validade</th>
+                <th>Situação</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lote in lotes %}
+            <tr {% if lote.consumido %}style="opacity: 0.45;"{% endif %}>
+                <td><strong>{{ lote.numero_lote }}</strong></td>
+                <td>{{ lote.insumo_nome }}</td>
+                <td>{{ lote.quantidade }} {{ lote.unidade }}</td>
+                <td>{{ lote.data_recebimento }}</td>
+                <td>
+                    {% if lote.data_validade %}
+                        {{ lote.data_validade }}
+                        {% if not lote.consumido %}
+                            <br>
+                            <small>
+                                {% if lote.dias_para_vencer < 0 %}
+                                    (vencido há {{ lote.dias_para_vencer | abs }} dias)
+                                {% else %}
+                                    ({{ lote.dias_para_vencer }} dias)
+                                {% endif %}
+                            </small>
+                        {% endif %}
+                    {% else %}
+                        <span style="color:#aaa;">Sem validade</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if lote.consumido %}
+                        <span class="badge badge-ok">Consumido</span>
+                    {% elif lote.status_validade == "vencido" %}
+                        <span class="badge badge-perigo">⛔ Vencido</span>
+                    {% elif lote.status_validade == "critico" %}
+                        <span class="badge badge-perigo">🔴 Vence em breve</span>
+                    {% elif lote.status_validade == "atencao" %}
+                        <span class="badge badge-aviso">🟡 Atenção</span>
+                    {% else %}
+                        <span class="badge badge-ok">✅ OK</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not lote.consumido %}
+                    <form method="POST" action="/lotes/consumir/{{ lote.id }}"
+                          onsubmit="return confirm('Confirmar baixa deste lote?')">
+                        <button type="submit" class="btn btn-perigo">
+                            🗑️ Dar Baixa
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="color:#888; text-align:center; padding: 32px 0;">
+            Nenhum lote cadastrado ainda. <a href="/lotes/cadastrar">Cadastre o primeiro!</a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

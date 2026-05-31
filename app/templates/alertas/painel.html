@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block titulo %}Alertas — Lab Estoque{% endblock %}
+
+{% block conteudo %}
+
+<div class="card">
+    <h2>🚨 Painel de Alertas</h2>
+    {% if total_alertas == 0 %}
+        <p style="color: #27ae60; font-weight: 600;">
+            ✅ Tudo em ordem! Nenhum alerta no momento.
+        </p>
+    {% else %}
+        <p style="color: #e74c3c; font-weight: 600;">
+            ⚠️ {{ total_alertas }} alerta(s) requerem atenção.
+        </p>
+    {% endif %}
+</div>
+
+<!-- ── BLOCO 1: Estoque Baixo ── -->
+{% if alertas.estoque_baixo %}
+<div class="card">
+    <h2>📉 Estoque Abaixo do Mínimo ({{ alertas.estoque_baixo | length }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Tipo</th>
+                <th>Estoque Atual</th>
+                <th>Estoque Mínimo</th>
+                <th>Compra Sugerida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in alertas.estoque_baixo %}
+            <tr>
+                <td><strong>{{ item.nome }}</strong></td>
+                <td>{{ item.tipo }}</td>
+                <td style="color: #e74c3c; font-weight: 700;">
+                    {{ item.estoque_atual }} {{ item.unidade }}
+                </td>
+                <td>{{ item.estoque_minimo }} {{ item.unidade }}</td>
+                <td>
+                    <span class="badge badge-aviso">
+                        + {{ "%.2f"|format(item.quantidade_sugerida) }} {{ item.unidade }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- ── BLOCO 2: Vencimento Crítico ── -->
+{% if alertas.vencimento_critico %}
+<div class="card">
+    <h2>⛔ Vencimento Crítico — até 30 dias ({{ alertas.vencimento_critico | length }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Nº Lote</th>
+                <th>Quantidade</th>
+                <th>Vencimento</th>
+                <th>Dias Restantes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in alertas.vencimento_critico %}
+            <tr>
+                <td><strong>{{ item.insumo_nome }}</strong></td>
+                <td>{{ item.numero_lote }}</td>
+                <td>{{ item.quantidade }} {{ item.unidade }}</td>
+                <td>{{ item.data_validade }}</td>
+                <td>
+                    {% if item.dias_restantes < 0 %}
+                        <span class="badge badge-perigo">
+                            Vencido há {{ item.dias_restantes | abs }} dias
+                        </span>
+                    {% else %}
+                        <span class="badge badge-perigo">
+                            {{ item.dias_restantes }} dias
+                        </span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- ── BLOCO 3: Vencimento Atenção ── -->
+{% if alertas.vencimento_atencao %}
+<div class="card">
+    <h2>🟡 Vencimento Próximo — 31 a 90 dias ({{ alertas.vencimento_atencao | length }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Nº Lote</th>
+                <th>Quantidade</th>
+                <th>Vencimento</th>
+                <th>Dias Restantes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in alertas.vencimento_atencao %}
+            <tr>
+                <td><strong>{{ item.insumo_nome }}</strong></td>
+                <td>{{ item.numero_lote }}</td>
+                <td>{{ item.quantidade }} {{ item.unidade }}</td>
+                <td>{{ item.data_validade }}</td>
+                <td>
+                    <span class="badge badge-aviso">
+                        {{ item.dias_restantes }} dias
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if total_alertas == 0 %}
+<div class="card" style="text-align:center; padding: 48px;">
+    <p style="font-size: 3rem;">🎉</p>
+    <p style="font-size: 1.1rem; color: #27ae60; margin-top: 12px;">
+        Todos os estoques estão dentro do limite e as validades estão seguras.
+    </p>
+</div>
+{% endif %}
+
+{% endblock %}

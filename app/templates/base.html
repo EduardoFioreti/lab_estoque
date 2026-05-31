@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- O bloco "titulo" permite que cada página filha defina seu próprio título -->
+    <title>{% block titulo %}Lab Estoque{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <h1>🧪 Lab Estoque</h1>
+            <p>Sistema de Gestão de Estoque para Laboratórios</p>
+        </div>
+    </header>
+
+    <nav>
+        <a href="/">🏠 Início</a>
+        <a href="/insumos">📦 Insumos</a>
+        <a href="/lotes">🗃️ Lotes</a>
+        <a href="/alertas">🚨 Alertas</a>
+        <a href="/compras">🛒 Lista de Compras</a>
+    </nav>
+
+    <main>
+        <!-- Bloco de mensagem de feedback (sucesso, erro) -->
+        {% if mensagem %}
+            <div class="mensagem mensagem-{{ tipo_mensagem }}">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <!-- Cada página filha injeta seu conteúdo aqui -->
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Lab Estoque &copy; 2026 — Desenvolvido com FastAPI + SQLite</p>
+    </footer>
+
+</body>
+</html>

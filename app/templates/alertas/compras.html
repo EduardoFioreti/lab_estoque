@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block titulo %}Lista de Compras — Lab Estoque{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+    <h2>🛒 Lista de Compras</h2>
+    <p style="color: #888; margin-top: -8px; margin-bottom: 4px;">
+        Gerada automaticamente com base nos estoques abaixo do mínimo.
+    </p>
+</div>
+
+{% if itens %}
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Insumo</th>
+                <th>Tipo</th>
+                <th>Estoque Atual</th>
+                <th>Estoque Mínimo</th>
+                <th>Quantidade a Comprar</th>
+                <th>Unidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ item.nome }}</strong></td>
+                <td>{{ item.tipo }}</td>
+                <td style="color: #e74c3c; font-weight: 700;">{{ item.estoque_atual }}</td>
+                <td>{{ item.estoque_minimo }}</td>
+                <td>
+                    <span class="badge badge-aviso">
+                        {{ "%.2f"|format(item.quantidade_sugerida) }}
+                    </span>
+                </td>
+                <td>{{ item.unidade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #dde1e7;">
+        <strong>Total de itens a comprar: {{ itens | length }}</strong>
+    </div>
+</div>
+
+{% else %}
+<div class="card" style="text-align:center; padding: 48px;">
+    <p style="font-size: 3rem;">✅</p>
+    <p style="font-size: 1.1rem; color: #27ae60; margin-top: 12px;">
+        Nenhuma compra necessária no momento!<br>
+        Todos os estoques estão acima do mínimo.
+    </p>
+</div>
+{% endif %}
+
+{% endblock %}

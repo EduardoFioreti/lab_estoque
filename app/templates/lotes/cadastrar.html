@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastrar Lote — Lab Estoque{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+    <h2>🗃️ Cadastrar Novo Lote</h2>
+
+    {% if not insumos %}
+        <div class="mensagem mensagem-erro">
+            ⚠️ Nenhum insumo cadastrado. 
+            <a href="/insumos/cadastrar">Cadastre um insumo primeiro.</a>
+        </div>
+    {% else %}
+    <form method="POST" action="/lotes/cadastrar">
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="insumo_id">Insumo *</label>
+                <select id="insumo_id" name="insumo_id" required>
+                    <option value="">Selecione o insumo...</option>
+                    {% for insumo in insumos %}
+                        <option value="{{ insumo.id }}">
+                            {{ insumo.nome }} ({{ insumo.tipo }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numero_lote">Número do Lote *</label>
+                <input type="text" id="numero_lote" name="numero_lote"
+                       placeholder="Ex: LOT-2025-001" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade">Quantidade *</label>
+                <input type="number" id="quantidade" name="quantidade"
+                       step="0.01" min="0.01" placeholder="Ex: 10.5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="data_recebimento">Data de Recebimento *</label>
+                <input type="date" id="data_recebimento" name="data_recebimento"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="data_validade">
+                    Data de Validade
+                    <small style="font-weight:400; color:#888;">(opcional)</small>
+                </label>
+                <input type="date" id="data_validade" name="data_validade">
+            </div>
+
+        </div>
+
+        <div style="margin-top: 8px; display: flex; gap: 12px;">
+            <button type="submit" class="btn btn-sucesso">💾 Salvar Lote</button>
+            <a href="/lotes" class="btn btn-primario">← Voltar</a>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
