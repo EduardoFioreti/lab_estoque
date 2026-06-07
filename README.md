@@ -197,30 +197,6 @@ O banco SQLite será criado automaticamente na primeira execução.
 
 ---
 
-## 📸 Screenshots
-
-Adicione aqui imagens do sistema:
-
-### Dashboard
-
-```text
-screenshots/dashboard.png
-```
-
-### Painel de Alertas
-
-```text
-screenshots/alertas.png
-```
-
-### Lista de Compras
-
-```text
-screenshots/compras.png
-```
-
----
-
 ## 🔮 Roadmap
 
 * [ ] Autenticação de usuários
